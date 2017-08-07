@@ -72,6 +72,10 @@
 (typealias dpkg_script_t)
 (typealiasactual dpkg_script_t sys.isid)
 
+(in files.home
+    (filecon "/home/.*" any file_context)
+)
+
 (in sys
     (allow isid self
         (context
