@@ -1,6 +1,6 @@
 [Distribution]
 Distribution=fedora
-Release=27
+Release=28
 Repositories=rawhide
 
 [Output]
