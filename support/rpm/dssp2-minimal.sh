@@ -1,7 +1,6 @@
 #!/bin/bash
 # -*- mode: shell-script; indent-tabs-mode: nil; sh-basic-offset: 4; -*-
 
-set -e
 set -o pipefail
 
 test -e /bin/dnf || retval=192
