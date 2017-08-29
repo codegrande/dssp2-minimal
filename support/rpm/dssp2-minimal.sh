@@ -3,6 +3,8 @@
 
 set -o pipefail
 
+retval=0
+
 test -e /bin/dnf || retval=192
 
 if [[ $retval = 192 ]]
@@ -49,7 +51,7 @@ __buildit ()
         "s/%global commit1.*/%global commit1 $BASEHEAD/" \
             ${HOME}/rpmbuild/SPECS/dssp2-minimal.spec
 
-    /bin/rpmbuild -ba ${HOME}/rpmbuild/SPECS/dssp2-minimal.spec
+    /bin/rpmbuild -ba ${HOME}/rpmbuild/SPECS/dssp2-minimal.spec || return 192
 }
 
 __devtree ()
@@ -59,7 +61,14 @@ __devtree ()
 
         /bin/rpmdev-setuptree
 
-        __buildit || __remove_rpmbuild_dir
+        retval=0
+
+        __buildit
+
+        if ! [[ "$retval" == 0 ]]
+        then
+            __remove_rpmbuild_dir && exit 192
+        fi
 
         /bin/mv ${HOME}/rpmbuild/{RPMS/noarch/,SRPMS}/dssp2-*.rpm \
             ${HOME}/
@@ -89,6 +98,8 @@ then
 
 elif ! [[ $UID = 0 ]]
 then
+    retval=0
+
     test -e /bin/sudo || retval=192
 
     if [[ $retval = 192 ]]
