@@ -61,11 +61,9 @@ __devtree ()
 
         /bin/rpmdev-setuptree
 
-        retval=0
-
         __buildit
 
-        if ! [[ "$retval" == 0 ]]
+        if ! [[ $? == 0 ]]
         then
             __remove_rpmbuild_dir && exit 192
         fi
