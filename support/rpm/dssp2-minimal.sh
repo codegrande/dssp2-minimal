@@ -3,11 +3,9 @@
 
 set -o pipefail
 
-retval=0
+test -e /bin/dnf
 
-test -e /bin/dnf || retval=192
-
-if [[ $retval = 192 ]]
+if ! [[ $? == 0 ]]
 then
     echo "/bin/dnf is required but not installed"
     exit
@@ -65,7 +63,7 @@ __devtree ()
 
         if ! [[ $? == 0 ]]
         then
-            __remove_rpmbuild_dir && exit 192
+            __remove_rpmbuild_dir && return 192
         fi
 
         /bin/mv ${HOME}/rpmbuild/{RPMS/noarch/,SRPMS}/dssp2-*.rpm \
@@ -78,7 +76,7 @@ __devtree ()
     fi
 }
 
-if [[ $UID = 0 ]]
+if [[ $UID == 0 ]]
 then
     if ! /bin/rpm -q rpmdevtools rpm-build policycoreutils wget sed curl
     then
@@ -94,13 +92,12 @@ then
         __devtree
     fi
 
-elif ! [[ $UID = 0 ]]
+elif ! [[ $UID == 0 ]]
 then
-    retval=0
 
-    test -e /bin/sudo || retval=192
+    test -e /bin/sudo
 
-    if [[ $retval = 192 ]]
+    if ! [[ $? == 0 ]]
     then
         echo "/bin/sudo is required but not installed"
         exit
@@ -120,5 +117,5 @@ then
     fi
 fi
 
-exit
+exit $?
 #EOF
