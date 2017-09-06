@@ -276,6 +276,12 @@ sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/libselinux.conf
 
 cat /etc/selinux/dssp2-standard/contexts/x_contexts > /etc/X11/xorg.conf.d/99-selinux.conf
 
+echo ptp_kvm > /etc/modules-load.d/ptp_kvm.conf
+echo "refclock PHC /dev/ptp0 poll 3 dpoll -2 offset 0" >> /etc/chrony.conf
+
+echo "install_weak_deps=0" >> /etc/dnf/dnf.conf
+
+semodule -nB
 restorecon -RF /
 
 $([[ -n ${POSTINSTALL_SCRIPT} ]] && /bin/cat ${PATH_TO_FILES}/${POSTINSTALL_SCRIPT})
