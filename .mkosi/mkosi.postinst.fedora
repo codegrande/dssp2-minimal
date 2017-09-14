@@ -42,3 +42,4 @@ dracut -v --no-hostonly --uefi --kver \$1 \\
     -i /usr/lib/systemd/system-generators/systemd-veritysetup-generator /usr/lib/systemd/system-generators/systemd-veritysetup-generator \\
     /efi/EFI/Linux/linux-\$1.efi
 EOF
+chmod +x /root/.local/bin/dracutefiupdate
