@@ -1,3 +1,4 @@
 file_contexts
 policy.*
 image.raw
+image.roothash
