@@ -33,7 +33,13 @@ chmod u+w /root
 mkdir -p /root/.local/bin
 ln -s /root/.local/bin /root/bin
 cat > /root/.local/bin/dracutefiupdate <<EOF
-# Expects a single param: kernel version (example 4.13.0-1.2.secnext.fc28.x86_64)
+#!/bin/bash
+if ! [[ $# == 1 ]]
+then
+    echo "Expects a single parameter: kernel version (example 4.13.0-1.2.secnext.fc28.x86_64)"
+    exit
+fi
+
 dracut -v --no-hostonly --uefi --kver \$1 \\
     --kernel-cmdline "rhgb quiet checkreqprot=0 module.sig_enforce=1 selinux=1 security=selinux rw" \\
     -i /usr/lib/systemd/system/systemd-volatile-root.service /usr/lib/systemd/system/systemd-volatile-root.service \\
