@@ -13,6 +13,7 @@ RootSize=3G
 [Packages]
 Cache=/var/tmp/dnf-cache
 Packages=
+    cracklib-dicts
     dnf
     git
     nano
