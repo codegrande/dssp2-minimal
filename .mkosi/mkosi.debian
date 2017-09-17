@@ -7,7 +7,7 @@ Format=raw_gpt
 Bootable=yes
 
 [Partitions]
-RootSize=3G
+RootSize=2G
 
 [Packages]
 Cache=/var/tmp/apt-cache
