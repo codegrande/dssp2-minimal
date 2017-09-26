@@ -27,6 +27,8 @@ POLICY_CONFIG_SOURCES = config/customizable_types \
 	config/openssh_contexts \
 	config/removable_context \
 	config/securetty_types \
+	config/virtual_domain_context \
+	config/virtual_image_context \
 	config/x_contexts
 
 BASE_POLICY_SOURCES = policy/base/access_vectors.cil \
@@ -79,6 +81,8 @@ install-config: $(POLICY_CONFIG_SOURCES)
 	$(INSTALL) -m0644 config/x_contexts $(DESTDIR)/$(SYSCONFDIR)/selinux/$(POLICY_NAME)/contexts/x_contexts
 	$(INSTALL) -m0644 config/removable_context $(DESTDIR)/$(SYSCONFDIR)/selinux/$(POLICY_NAME)/contexts/removable_context
 	$(INSTALL) -m0644 config/securetty_types $(DESTDIR)/$(SYSCONFDIR)/selinux/$(POLICY_NAME)/contexts/securetty_types
+	$(INSTALL) -m0644 config/virtual_domain_context $(DESTDIR)/$(SYSCONFDIR)/selinux/$(POLICY_NAME)/contexts/virtual_domain_context
+	$(INSTALL) -m0644 config/virtual_image_context $(DESTDIR)/$(SYSCONFDIR)/selinux/$(POLICY_NAME)/contexts/virtual_image_context
 
 install-semodule: install-config $(BASE_POLICY_SOURCES) $(MINIMAL_POLICY_SOURCES)
 	$(MKDIR) -p $(DESTDIR)/$(SHAREDSTATEDIR)/selinux/$(POLICY_NAME)

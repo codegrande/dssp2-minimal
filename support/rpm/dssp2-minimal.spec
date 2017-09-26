@@ -45,14 +45,16 @@ Provides the base Defensec SELinux Security Policy package.
 %verify(not md5 size mtime) %{_sysconfdir}/selinux/%1/policy/policy.%{POLICYVER} \
 %dir %{_sysconfdir}/selinux/%1/contexts \
 %config(noreplace) %{_sysconfdir}/selinux/%1/contexts/customizable_types \
-%config(noreplace) %{_sysconfdir}/selinux/%1/contexts/securetty_types \
 %config(noreplace) %{_sysconfdir}/selinux/%1/contexts/dbus_contexts \
 %config(noreplace) %{_sysconfdir}/selinux/%1/contexts/default_contexts \
-%config(noreplace) %{_sysconfdir}/selinux/%1/contexts/openssh_contexts \
-%config(noreplace) %{_sysconfdir}/selinux/%1/contexts/x_contexts \
 %config(noreplace) %{_sysconfdir}/selinux/%1/contexts/default_type \
 %config(noreplace) %{_sysconfdir}/selinux/%1/contexts/failsafe_context \
+%config(noreplace) %{_sysconfdir}/selinux/%1/contexts/openssh_contexts \
 %config(noreplace) %{_sysconfdir}/selinux/%1/contexts/removable_context \
+%config(noreplace) %{_sysconfdir}/selinux/%1/contexts/securetty_types \
+%config(noreplace) %{_sysconfdir}/selinux/%1/contexts/virtual_domain_context \
+%config(noreplace) %{_sysconfdir}/selinux/%1/contexts/virtual_image_context \
+%config(noreplace) %{_sysconfdir}/selinux/%1/contexts/x_contexts \
 %dir %{_sysconfdir}/selinux/%1/contexts/files \
 %config(noreplace) %{_sysconfdir}/selinux/%1/contexts/files/media \
 %config(noreplace) %{_sysconfdir}/selinux/%1/contexts/files/file_contexts.subs_dist \
