@@ -1,0 +1,132 @@
+#!/bin/bash
+set -e
+
+OS_MEDIA_URL=https://fedora.mirror.wearetriple.com/linux/development/rawhide/Everything/x86_64/os/
+ROOT_PASSWD=abc123
+ROOT_SALT=$(openssl rand -base64 15)
+WHEEL_NAME=kcinimod
+WHEEL_PASSWD=abc123
+WHEEL_SALT=$(openssl rand -base64 15)
+GUEST_NAME=fedora
+GUEST_MEM_IN_MB=2048
+GUEST_VCPUS=2
+GUEST_IMG_PATH=/home/kcinimod/Images
+GUEST_IMG_SIZE_IN_GB=5
+OS_VARIANT=fedora26
+
+rootpw()
+{
+    /bin/python3 -c 'import crypt; print(crypt.crypt("'$1'", "$6$'$2'"))'
+}
+
+KICKSTART_URL=$(
+cat <<EOF |
+text
+auth --enableshadow --passalgo=sha512
+url --url=${OS_MEDIA_URL}
+keyboard --vckeymap=us-euro --xlayouts=us
+lang en_US.UTF-8
+network  --bootproto=dhcp --device=eth0 --noipv6 --activate
+rootpw --iscrypted $(rootpw ${ROOT_PASSWD} ${ROOT_SALT})
+timezone Europe/Amsterdam --isUtc
+user --groups=wheel --name=${WHEEL_NAME} --password=$(rootpw ${WHEEL_PASSWD} ${WHEEL_SALT}) --iscrypted
+bootloader --location=mbr --append=$(printf "%s\n" "\"module.sig_enforce checkreqprot=0 console=tty0 console=ttyS0,115200n8 serial rd_NO_PLYMOUTH\"")
+autopart --nolvm
+clearpart --all --initlabel
+shutdown
+
+repo --name=dssp2 --baseurl=https://tfirg.undo.it/dssp2/
+
+%packages --ignoremissing --nocore
+basesystem
+install
+systemd
+fedora-release
+kbd
+passwd
+kernel
+systemd-udev
+binutils
+qemu-guest-agent
+dssp2-repos
+dssp2-minimal
+dnf
+dnf-plugins-core
+less
+vim-minimal
+coreutils
+rootfiles
+setup
+shadow-utils
+util-linux
+hostname
+iproute
+filesystem
+sudo
+glibc
+bash
+openssh-server
+setools-console
+nano
+-selinux-policy
+-selinux-policy-targeted
+%end
+
+%post
+chmod u+w /root
+systemctl enable systemd-resolved systemd-networkd
+ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
+
+cat > /etc/systemd/network/ens2.network <<FOE
+[Match]
+Name=ens2
+[Network]
+DHCP=yes
+FOE
+
+echo "module-store = direct" > /etc/selinux/semanage.conf
+echo "expand-check = 1" >> /etc/selinux/semanage.conf
+echo "usepasswd = false" >> /etc/selinux/semanage.conf
+
+cp /usr/lib/tmpfiles.d/pam.conf /etc/tmpfiles.d/
+sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/pam.conf
+cp /usr/lib/tmpfiles.d/initscripts.conf /etc/tmpfiles.d/
+sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/initscripts.conf
+cp /usr/lib/tmpfiles.d/sudo.conf /etc/tmpfiles.d/
+sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/sudo.conf
+cp /usr/lib/tmpfiles.d/libselinux.conf /etc/tmpfiles.d/
+sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/libselinux.conf
+
+cat /etc/selinux/dssp2-standard/contexts/x_contexts > /etc/X11/xorg.conf.d/99-selinux.conf
+
+echo "%wheel ALL=(ALL) TYPE=sysadm.subj ROLE=sysadm.role ALL" > /etc/sudoers.d/wheel
+chmod 0440 /etc/sudoers.d/wheel
+
+echo "%sysadm.id" >> /etc/security/sepermit.conf
+echo "%user.id" >> /etc/security/sepermit.conf
+echo "%wheel.id" >> /etc/security/sepermit.conf
+
+echo ptp_kvm > /etc/modules-load.d/ptp_kvm.conf
+echo "refclock PHC /dev/ptp0 poll 3 dpoll -2 offset 0" >> /etc/chrony.conf
+
+echo "install_weak_deps=0" >> /etc/dnf/dnf.conf
+
+semodule -nB
+restorecon -RF /
+%end
+EOF
+fpaste
+)
+
+if [ -n "$KICKSTART_URL" ]
+then
+    virt-install --name=${GUEST_NAME} --memory=${GUEST_MEM_IN_MB} --vcpus=${GUEST_VCPUS} \
+        --location=${OS_MEDIA_URL} \
+        --os-type=linux --os-variant=${OS_VARIANT} \
+        --disk path=${GUEST_IMG_PATH}/${GUEST_NAME}.qcow2,size=${GUEST_IMG_SIZE_IN_GB} --network=user \
+        --graphics none --console pty,target_type=serial \
+        --extra-args "ks=${KICKSTART_URL}/raw console=tty0 console=ttyS0,115200n8 serial"
+else
+    echo "No Kickstart URL: Cancelled!"
+fi
+exit
