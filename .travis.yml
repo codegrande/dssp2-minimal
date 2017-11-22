@@ -31,6 +31,7 @@ before_install:
   - flex -V
   - swig -version
   - python -V
+  - xmlto --version
 
 install:
   - SELINUX_USERSPACE_VERSION=secilc-2.7
@@ -58,7 +59,7 @@ install:
         echo "${SELINUX_USERSPACE_VERSION}" > "${TRAVIS_BUILD_DIR}/selinux/travis.version"
       fi
 
-  # Use TEST_TOOLCHAIN variable to tell refpolicy Makefile about the installed location
+  # Use TEST_TOOLCHAIN variable to tell dssp2-minimal Makefile about the installed location
   - export TEST_TOOLCHAIN="${TRAVIS_BUILD_DIR}/selinux"
 
 script:
