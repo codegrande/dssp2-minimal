@@ -1,0 +1,66 @@
+# Derived from Nicolas Iooss: https://github.com/fishilico/selinux-refpolicy-patched/blob/travis-upstream/.travis.yml
+
+language: generic
+
+matrix:
+  fast_finish: true
+
+sudo: false
+dist: trusty
+
+cache:
+  directories:
+    - ${TRAVIS_BUILD_DIR}/selinux
+
+addons:
+  apt:
+    packages:
+    # Install SELinux userspace utilities dependencies
+    - bison
+    - flex
+    - gettext
+    - libaudit-dev
+    - libbz2-dev
+    - libpcre3-dev
+    - swig
+    - xmlto
+
+before_install:
+  - lsb_release -a
+  - bison -V
+  - flex -V
+  - swig -version
+  - python -V
+
+install:
+  - SELINUX_USERSPACE_VERSION=secilc-2.7
+
+  - export DESTDIR="${TRAVIS_BUILD_DIR}/selinux"
+  - |
+      if [[ "${SELINUX_USERSPACE_VERSION}" != "$(cat ${TRAVIS_BUILD_DIR}/selinux/travis.version)" ]]; then
+        rm -fR selinux-src
+
+        # Download current SELinux userspace tools and libraries
+        git clone https://github.com/SELinuxProject/selinux.git selinux-src -b ${SELINUX_USERSPACE_VERSION}
+        mv "selinux-${SELINUX_USERSPACE_VERSION}" selinux-src
+
+        # Drop sepolicy to break setools dependence (sepolicy isn't used anyway)
+        sed -i -e 's/sepolicy//' selinux-src/policycoreutils/Makefile
+
+        # Drop restorecond to break glib dependence
+        sed -i -e 's/ restorecond//' selinux-src/policycoreutils/Makefile
+
+        # Drop sandbox to break libcap-ng dependence
+        sed -i -e 's/ sandbox//' selinux-src/policycoreutils/Makefile
+
+        # Compile and install SELinux toolchain into ~/selinux
+        make OPT_SUBDIRS=secilc -C selinux-src install
+        echo "${SELINUX_USERSPACE_VERSION}" > "${TRAVIS_BUILD_DIR}/selinux/travis.version"
+      fi
+
+  # Use TEST_TOOLCHAIN variable to tell refpolicy Makefile about the installed location
+  - export TEST_TOOLCHAIN="${TRAVIS_BUILD_DIR}/selinux"
+
+script:
+  - set -e
+  - make policy.31

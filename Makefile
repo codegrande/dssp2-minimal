@@ -10,12 +10,19 @@ INSTALL = $(USRBINDIR)/install
 MKDIR = $(BINDIR)/mkdir
 RM = $(BINDIR)/rm
 SBINDIR ?= /sbin
-SECILC = $(USRBINDIR)/secilc
 SEMODULE = $(USRSBINDIR)/semodule
 SHAREDSTATEDIR ?= /var/lib
 SYSCONFDIR ?= /etc
 USRBINDIR ?= /usr/bin
 USRSBINDIR ?= /usr/sbin
+
+ifdef TEST_TOOLCHAIN
+tc_usrbindir := env LD_LIBRARY_PATH="$(TEST_TOOLCHAIN)/lib:$(TEST_TOOLCHAIN)/usr/lib" $(TEST_TOOLCHAIN)$(USRBINDIR)
+else
+tc_usrbindir := $(USRBINDIR)
+endif
+
+SECILC ?= $(tc_usrbindir)/secilc
 
 POLICY_CONFIG_SOURCES = config/customizable_types \
 	config/dbus_contexts \
