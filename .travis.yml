@@ -64,4 +64,4 @@ install:
 
 script:
   - set -e
-  - make policy.31
+  - make
