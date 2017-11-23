@@ -65,3 +65,7 @@ install:
 script:
   - set -e
   - make
+
+notifications:
+  email:
+    on_success: never
