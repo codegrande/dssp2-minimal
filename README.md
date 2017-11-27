@@ -46,6 +46,12 @@ Fedora:
 	cp /usr/lib/tmpfiles.d/sudo.conf /etc/tmpfiles.d/ && \
 		sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/sudo.conf
 
+    cp /lib/systemd/system/sssd-kcm.socket /etc/systemd/system/ && \
+        sed -i 's/\/var\/run/\/run/' /etc/systemd/system/sssd-kcm.socket
+
+    cp /lib/systemd/system/sssd-secrets.socket /etc/systemd/system/ && \
+        sed -i 's/\/var\/run/\/run/' /etc/systemd/system/sssd-secrets.socket
+
 Debian:
 
 	cp /usr/lib/tmpfiles.d/sshd.conf /etc/tmpfiles.d/ && \
