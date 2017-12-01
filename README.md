@@ -82,7 +82,7 @@ The mkosi configuration enclosed relies on my mkosi fork at https://github.com/D
 
 ## Getting started with Hello World!
 
-    echo "Hello World! from: `id -Z`" > /usr/local/bin/helloworld.sh
+    echo "Hello World! from: \`id -Z\`" > /usr/local/bin/helloworld.sh
     chmod +x /usr/local/bin/helloworld.sh
     cat > helloworld.cil <<EOF
     (block helloworld
