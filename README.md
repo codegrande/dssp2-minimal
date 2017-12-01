@@ -82,7 +82,10 @@ The mkosi configuration enclosed relies on my mkosi fork at https://github.com/D
 
 ## Getting started with Hello World!
 
-    echo "Hello World! from: \`id -Z\`" > /usr/local/bin/helloworld.sh
+    cat > /usr/local/bin/helloworld.sh <<EOF
+    #!/bin/bash
+    echo "Hello World! from: \`id -Z\`"
+    EOF
     chmod +x /usr/local/bin/helloworld.sh
     cat > helloworld.cil <<EOF
     (block helloworld
@@ -102,7 +105,7 @@ The mkosi configuration enclosed relies on my mkosi fork at https://github.com/D
     EOF
     semodule -i helloworld.cil
     restorecon /usr/local/bin/helloworld.sh
-    helloworld.sh
+    /usr/local/bin/helloworld.sh
 
 
 ## Resources
