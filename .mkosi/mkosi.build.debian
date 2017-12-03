@@ -1,4 +1,6 @@
 #!/bin/sh -ex
+# -*- mode: shell-script; indent-tabs-mode: nil; sh-basic-offset: 4; -*-
+# SPDX-License-Identifier: Unlicense
 
 make install-semodule
 

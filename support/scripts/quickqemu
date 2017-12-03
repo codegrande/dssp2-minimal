@@ -1,5 +1,6 @@
 #!/bin/bash
 # -*- mode: shell-script; indent-tabs-mode: nil; sh-basic-offset: 4; -*-
+# SPDX-License-Identifier: Unlicense
 
 if [[ $# == 1 ]]
 then

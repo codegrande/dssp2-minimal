@@ -1,4 +1,7 @@
 #!/bin/bash
+# -*- mode: shell-script; indent-tabs-mode: nil; sh-basic-offset: 4; -*-
+# SPDX-License-Identifier: Unlicense
+
 set -e
 
 OS_MEDIA_URL=https://fedora.mirror.wearetriple.com/linux/development/rawhide/Everything/x86_64/os/
