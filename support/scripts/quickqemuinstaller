@@ -35,11 +35,11 @@ help()
     -Z  : Kickstart post-installation script to include
 
     Example: $0 -G myfedora \\
-            -M http://mirror.nl.leaseweb.net/fedora/linux/releases/test/26_Beta/Everything/x86_64/iso/Fedora-Everything-netinst-x86_64-26_Beta-1.4.iso \\
-            -V http://mirror.nl.leaseweb.net/fedora/linux/releases/test/26_Beta/Everything/x86_64/os/isolinux/vmlinuz \\
-            -P http://mirror.nl.leaseweb.net/fedora/linux/releases/test/26_Beta/Everything/x86_64/os/isolinux/initrd.img \\
-            -O http://mirror.nl.leaseweb.net/fedora/linux/releases/test/26_Beta/Everything/x86_64/os/ \\
-            -R abc123 -I ${USER} -W abc123 -S 10
+        -M http://mirror.nl.leaseweb.net/fedora/linux/releases/test/26_Beta/Everything/x86_64/iso/Fedora-Everything-netinst-x86_64-26_Beta-1.4.iso \\
+        -V http://mirror.nl.leaseweb.net/fedora/linux/releases/test/26_Beta/Everything/x86_64/os/isolinux/vmlinuz \\
+        -P http://mirror.nl.leaseweb.net/fedora/linux/releases/test/26_Beta/Everything/x86_64/os/isolinux/initrd.img \\
+        -O http://mirror.nl.leaseweb.net/fedora/linux/releases/test/26_Beta/Everything/x86_64/os/ \\
+        -R abc123 -I ${USER} -W abc123 -S 10
 
     Just a note to self:
         /bin/tar -cf - ${PATH_TO_FILES}/myfedora.raw | /bin/xz -T 0 -9 -c - > myfedora.raw.tar.xz
