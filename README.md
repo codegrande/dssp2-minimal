@@ -23,7 +23,7 @@ DSSP requires `semodule` or `secilc` >= 2.7 and Linux 4.14
 SELinux should be enabled in the Linux kernel, your file systems should support `security extended attributes` and this support should be enabled in the Linux kernel.
 
 
-## Installation with semodule (requires semodule)
+## Installation with semodule: useful for systems where policy needs to be mutable at runtime (example: GNU/Linux distributions)
 
     git clone --recurse https://github.com/defensec/dssp2-minimal
     cd dssp2-minimal
@@ -36,7 +36,7 @@ SELinux should be enabled in the Linux kernel, your file systems should support 
     reboot
 
 
-## Installation without semodule (requires secilc)
+## Installation with secilc: useful for systems where policy does not need to be mutable at runtime (example: embedded)
 
     git clone --recurse https://github.com/defensec/dssp2-minimal
     cd dssp2-minimal
@@ -98,7 +98,7 @@ To avoid dumping of core with Xserver/Xwayland:
     cat /etc/selinux/dssp2-minimal/contexts/x_contexts > /etc/X11/xorg.conf.d/99-selinux.conf
 
 
-## Getting started with Hello World!
+## Getting started with Hello World! (requires installation with semodule)
 
     cat > /usr/local/bin/helloworld.sh <<EOF
     #!/bin/bash
