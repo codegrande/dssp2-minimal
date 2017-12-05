@@ -6,6 +6,7 @@ Minimal DSSP (Version2) was designed to provide a template to build the widest a
 
 A comprehensive set of optional templates, class mappings, class permissions and macros are provided by default to encourage efficient, consistent, and self documenting policy configuration.
 
+
 ## Leverages Common Intermediate Language
 
 Common Intermediate Language is a language that is native to SELinux and that implements functionality inspired by popular features of Tresys Reference policy without the need for a pre-processor.
@@ -14,13 +15,15 @@ The source policy oriented nature of CIL provides enhanced accessibility and mod
 
 New language features allow authors to focus on creativity and productivity. Clear and simple syntax makes it easy to parse and generate security policy.
 
+
 ## Requirements
 
-DSSP requires `semodule`, `secilc` >= 2.7 and Linux 4.14
+DSSP requires `semodule` or `secilc` >= 2.7 and Linux 4.14
 
 SELinux should be enabled in the Linux kernel, your file systems should support `security extended attributes` and this support should be enabled in the Linux kernel.
 
-## Installation
+
+## Installation with semodule (requires semodule)
 
     git clone --recurse https://github.com/defensec/dssp2-minimal
     cd dssp2-minimal
@@ -31,6 +34,28 @@ SELinux should be enabled in the Linux kernel, your file systems should support 
     EOF
     echo "-F" > /.autorelabel
     reboot
+
+
+## Installation without semodule (requires secilc)
+
+    git clone --recurse https://github.com/defensec/dssp2-minimal
+    cd dssp2-minimal
+    make install-config
+    make
+    mkdir -p /etc/selinux/dssp2-minimal/policy
+    cp policy.* /etc/selinux/dssp2-minimal/policy/
+    cp file_contexts /etc/selinux/dssp2-minimal/contexts/files/
+	cat > /etc/selinux/config <<EOF
+    SELINUX=permissive
+    SELINUXTYPE=dssp2-minimal
+    EOF
+    cat > /etc/selinux/dssp2-minimal/seusers <<EOF
+    root:sys.isid:s0-s0
+    __default__:sys.isid:s0-s0
+    EOF
+    echo "-F" > /.autorelabel
+    reboot
+
 
 ## Known issues
 
@@ -71,6 +96,7 @@ Gentoo:
 To avoid dumping of core with Xserver/Xwayland:
 
     cat /etc/selinux/dssp2-minimal/contexts/x_contexts > /etc/X11/xorg.conf.d/99-selinux.conf
+
 
 ## Getting started with Hello World!
 
