@@ -72,14 +72,6 @@ To avoid dumping of core with Xserver/Xwayland:
 
     cat /etc/selinux/dssp2-minimal/contexts/x_contexts > /etc/X11/xorg.conf.d/99-selinux.conf
 
-The mkosi configuration enclosed relies on my mkosi fork at https://github.com/DefenSec/mkosi and on dssp2-standard on the host
-
-    To create default ./image.raw:
-        sudo mkosi
-
-    To create debian ./image.raw:
-        sudo mkosi --default .mkosi/mkosi.debian --postinst-script .mkosi/mkosi.postinst.debian --build-script .mkosi/mkosi.build.debian
-
 ## Getting started with Hello World!
 
     cat > /usr/local/bin/helloworld.sh <<EOF
