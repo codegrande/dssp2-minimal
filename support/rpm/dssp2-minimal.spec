@@ -134,5 +134,5 @@ selinuxenabled && semodule -B -n
 exit 0
 
 %changelog
-* Tue Dec 12 2017 Dominick Grift <dac.override@gmail.com> - 1.1-%(date +%Y%%m%%d)git%{shortcommit0}
+* Tue Dec 5 2017 Dominick Grift <dac.override@gmail.com> - 1.1-%(date +%Y%%m%%d)git%{shortcommit0}
 - Git snapshot
