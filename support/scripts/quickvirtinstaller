@@ -97,17 +97,8 @@ cp /usr/lib/tmpfiles.d/initscripts.conf /etc/tmpfiles.d/
 sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/initscripts.conf
 cp /usr/lib/tmpfiles.d/sudo.conf /etc/tmpfiles.d/
 sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/sudo.conf
-cp /usr/lib/tmpfiles.d/libselinux.conf /etc/tmpfiles.d/
-sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/libselinux.conf
 
 cat /etc/selinux/dssp2-standard/contexts/x_contexts > /etc/X11/xorg.conf.d/99-selinux.conf
-
-echo "%wheel ALL=(ALL) TYPE=sysadm.subj ROLE=sysadm.role ALL" > /etc/sudoers.d/wheel
-chmod 0440 /etc/sudoers.d/wheel
-
-echo "%sysadm.id" >> /etc/security/sepermit.conf
-echo "%user.id" >> /etc/security/sepermit.conf
-echo "%wheel.id" >> /etc/security/sepermit.conf
 
 echo ptp_kvm > /etc/modules-load.d/ptp_kvm.conf
 echo "refclock PHC /dev/ptp0 poll 3 dpoll -2 offset 0" >> /etc/chrony.conf
