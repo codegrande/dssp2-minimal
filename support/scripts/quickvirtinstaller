@@ -24,26 +24,26 @@ _arg_root_password="abc123"
 _arg_wheel_name="kcinimod"
 _arg_wheel_password="abc123"
 _arg_guest_name="myguest"
-_arg_guest_mem_in_mb="2048"
+_arg_guest_mem_size_in_mib="2048"
 _arg_guest_num_vcpu="2"
 _arg_guest_image_path="/data/kcinimod/libvirt/"
-_arg_guest_image_size_in_gb="5"
+_arg_guest_image_size_in_gib="5"
 _arg_os_variant="fedora26"
 _arg_verbose=off
 
 print_help ()
 {
     printf "%s\n" "Quick Libvirt installer for Fedora with DSSP2 minimal"
-    printf 'Usage: %s [-a|--os-media-url <arg>] [-b|--root-password <arg>] [-c|--wheel-name <arg>] [-d|--wheel-password <arg>] [-e|--guest-name <arg>] [-f|--guest-mem-in-mb <arg>] [-g|--guest-num-vcpu <arg>] [-i|--guest-image-path <arg>] [-j|--guest-image-size-in-gb <arg>] [-k|--os-variant <arg>] [-v|--(no-)verbose] [-h|--help]\n' "$0"
+    printf 'Usage: %s [-a|--os-media-url <arg>] [-b|--root-password <arg>] [-c|--wheel-name <arg>] [-d|--wheel-password <arg>] [-e|--guest-name <arg>] [-f|--guest-mem-size-in-mib <arg>] [-g|--guest-num-vcpu <arg>] [-i|--guest-image-path <arg>] [-j|--guest-image-size-in-gib <arg>] [-k|--os-variant <arg>] [-v|--(no-)verbose] [-h|--help]\n' "$0"
     printf "\t%s\n" "-a,--os-media-url: URL to installation media (default: '"https://fedora.mirror.wearetriple.com/linux/development/rawhide/Everything/x86_64/os/"')"
     printf "\t%s\n" "-b,--root-password: Guest root password (default: '"abc123"')"
     printf "\t%s\n" "-c,--wheel-name: Guest wheel name (default: '"kcinimod"')"
     printf "\t%s\n" "-d,--wheel-password: Guest wheel password (default: '"abc123"')"
     printf "\t%s\n" "-e,--guest-name: Guest name (default: '"myguest"')"
-    printf "\t%s\n" "-f,--guest-mem-in-mb: Guest memory in megabytes (default: '"2048"')"
+    printf "\t%s\n" "-f,--guest-mem-size-in-mib: Guest memory in mebibyte (default: '"2048"')"
     printf "\t%s\n" "-g,--guest-num-vcpu: Guest number of virtual CPU (default: '"2"')"
     printf "\t%s\n" "-i,--guest-image-path: Path to guest image (default: '"/data/kcinimod/libvirt/"')"
-    printf "\t%s\n" "-j,--guest-image-size-in-gb: Guest image size in gigabytes (default: '"5"')"
+    printf "\t%s\n" "-j,--guest-image-size-in-gib: Guest image size in gibibyte (default: '"5"')"
     printf "\t%s\n" "-k,--os-variant: Guest OS variant (default: '"fedora26"')"
     printf "\t%s\n" "-v,--verbose,--no-verbose: Enable verbosity (off by default)"
     printf "\t%s\n" "-h,--help: Prints help"
@@ -110,16 +110,16 @@ parse_commandline ()
             -e*)
                 _arg_guest_name="${_key##-e}"
                 ;;
-            -f|--guest-mem-in-mb)
+            -f|--guest-mem-size-in-mib)
                 test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
-                _arg_guest_mem_in_mb="$2"
+                _arg_guest_mem_size_in_mib="$2"
                 shift
                 ;;
-            --guest-mem-in-mb=*)
-                _arg_guest_mem_in_mb="${_key##--guest-mem-in-mb=}"
+            --guest-mem-size-in-mib=*)
+                _arg_guest_mem_size_in_mib="${_key##--guest-mem-size-in-mib=}"
                 ;;
             -f*)
-                _arg_guest_mem_in_mb="${_key##-f}"
+                _arg_guest_mem_size_in_mib="${_key##-f}"
                 ;;
             -g|--guest-num-vcpu)
                 test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
@@ -143,16 +143,16 @@ parse_commandline ()
             -i*)
                 _arg_guest_image_path="${_key##-i}"
                 ;;
-            -j|--guest-image-size-in-gb)
+            -j|--guest-image-size-in-gib)
                 test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
-                _arg_guest_image_size_in_gb="$2"
+                _arg_guest_image_size_in_gib="$2"
                 shift
                 ;;
-            --guest-image-size-in-gb=*)
-                _arg_guest_image_size_in_gb="${_key##--guest-image-size-in-gb=}"
+            --guest-image-size-in-gib=*)
+                _arg_guest_image_size_in_gib="${_key##--guest-image-size-in-gib=}"
                 ;;
             -j*)
-                _arg_guest_image_size_in_gb="${_key##-j}"
+                _arg_guest_image_size_in_gib="${_key##-j}"
                 ;;
             -k|--os-variant)
                 test $# -lt 2 && die "Missing value for the optional argument '$_key'." 1
@@ -285,10 +285,10 @@ fpaste
 
 if [ -n "$_arg_kickstart_url" ]
 then
-    virt-install --name=${_arg_guest_name} --memory=${_arg_guest_mem_in_mb} --vcpus=${_arg_guest_num_vcpu} \
+    virt-install --name=${_arg_guest_name} --memory=${_arg_guest_mem_size_in_mib} --vcpus=${_arg_guest_num_vcpu} \
         --location=${_arg_os_media_url} \
         --os-type=linux --os-variant=${_arg_os_variant} \
-        --disk path=${_arg_guest_image_path}/${_arg_guest_name}.qcow2,size=${_arg_guest_image_size_in_gb} --network=user \
+        --disk path=${_arg_guest_image_path}/${_arg_guest_name}.qcow2,size=${_arg_guest_image_size_in_gib} --network=user \
         --graphics none --console pty,target_type=serial \
         --extra-args "ks=${_arg_kickstart_url}/raw console=tty0 console=ttyS0,115200n8 serial"
 else
