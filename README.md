@@ -50,8 +50,8 @@ SELinux should be enabled in the Linux kernel, your file systems should support 
     SELINUXTYPE=dssp2-minimal
     EOF
     cat > /etc/selinux/dssp2-minimal/seusers <<EOF
-    root:sys.isid:s0-s0
-    __default__:sys.isid:s0-s0
+    root:sys.id:s0-s0
+    __default__:sys.id:s0-s0
     EOF
     echo "-F" > /.autorelabel
     reboot
@@ -65,11 +65,11 @@ Various `systemd` socket units and `systemd-tmpfiles` configuration snippets may
 
 Fedora:
 
-	cp /usr/lib/tmpfiles.d/pam.conf /etc/tmpfiles.d/ && \
-		sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/pam.conf
+    cp /usr/lib/tmpfiles.d/pam.conf /etc/tmpfiles.d/ && \
+        sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/pam.conf
 
-	cp /usr/lib/tmpfiles.d/sudo.conf /etc/tmpfiles.d/ && \
-		sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/sudo.conf
+    cp /usr/lib/tmpfiles.d/sudo.conf /etc/tmpfiles.d/ && \
+        sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/sudo.conf
 
     cp /lib/systemd/system/sssd-kcm.socket /etc/systemd/system/ && \
         sed -i 's/\/var\/run/\/run/' /etc/systemd/system/sssd-kcm.socket
@@ -79,19 +79,19 @@ Fedora:
 
 Debian:
 
-	cp /usr/lib/tmpfiles.d/sshd.conf /etc/tmpfiles.d/ && \
-		sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/sshd.conf
+    cp /usr/lib/tmpfiles.d/sshd.conf /etc/tmpfiles.d/ && \
+        sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/sshd.conf
 
-	cp /lib/systemd/system/dbus.socket /etc/systemd/system/ && \
-		sed -i 's/\/var\/run/\/run/' /etc/systemd/system/dbus.socket
+    cp /lib/systemd/system/dbus.socket /etc/systemd/system/ && \
+        sed -i 's/\/var\/run/\/run/' /etc/systemd/system/dbus.socket
 
-	cp /lib/systemd/system/avahi-daemon.socket /etc/systemd/system/ && \
-		sed -i 's/\/var\/run/\/run/' /etc/systemd/system/avahi-daemon.socket
+    cp /lib/systemd/system/avahi-daemon.socket /etc/systemd/system/ && \
+        sed -i 's/\/var\/run/\/run/' /etc/systemd/system/avahi-daemon.socket
 
 Gentoo:
 
-	cp /usr/lib/systemd/system/dbus.socket /etc/systemd/system/ && \
-		sed -i 's/\/var\/run/\/run/' /etc/systemd/system/dbus.socket
+    cp /usr/lib/systemd/system/dbus.socket /etc/systemd/system/ && \
+        sed -i 's/\/var\/run/\/run/' /etc/systemd/system/dbus.socket
 
 To avoid dumping of core with Xserver/Xwayland:
 

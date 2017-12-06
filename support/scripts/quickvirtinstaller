@@ -294,6 +294,6 @@ then
 else
     echo "No Kickstart URL: Cancelled!"
 fi
-exit
 
+exit $?
 #EOF
