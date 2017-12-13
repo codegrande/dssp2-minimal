@@ -1,3 +1,5 @@
+/etc/private /etc
+
 /usr/local/etc /etc
 
 /bin /usr/bin
@@ -17,3 +19,9 @@
 /usr/local/sbin /usr/sbin
 
 /usr/local/share /usr/share
+
+/var/cache/private /var/cache
+
+/var/lib/private /var/lib
+
+/var/log/private /var/log
