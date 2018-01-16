@@ -286,7 +286,7 @@ fpaste
 if [ -n "$_arg_kickstart_url" ]
 then
     virt-install --name=${_arg_guest_name} --memory=${_arg_guest_mem_size_in_mib} --vcpus=${_arg_guest_num_vcpu} \
-        --location=${_arg_os_media_url} \
+        --location=${_arg_os_media_url} --cpu=host \
         --os-type=linux --os-variant=${_arg_os_variant} \
         --disk path=${_arg_guest_image_path}/${_arg_guest_name}.qcow2,size=${_arg_guest_image_size_in_gib} --network=user \
         --graphics none --console pty,target_type=serial \
