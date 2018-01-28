@@ -3,8 +3,9 @@
 
 ;;; Commentary:
 
-;; The base major mode for editing CIL code, derived from Emacs
-;; Lisp-mode.
+;; The base major mode for editing CIL code. Derived from Emacs
+;; Lisp-mode (https://www.gnu.org/software/emacs/) Copyright (C)
+;; 1985-1986, 1999-2018 Free Software Foundation, Inc.
 
 ;;; Code:
 
