@@ -1,7 +1,7 @@
 # -*- Mode: makefile; indent-tabs-mode: t -*-
 # SPDX-License-Identifier: Unlicense
 
-.PHONY: all check clean policy install-config install-semodule
+.PHONY: all clean policy install-config install-semodule
 
 include build.conf
 
