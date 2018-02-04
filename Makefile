@@ -8,7 +8,6 @@ include build.conf
 BINDIR ?= /bin
 DESTDIR ?= /
 FIND = $(USRBINDIR)/find
-GREP = $(BINDIR)/grep
 INSTALL = $(USRBINDIR)/install
 MKDIR = $(BINDIR)/mkdir
 RM = $(BINDIR)/rm
