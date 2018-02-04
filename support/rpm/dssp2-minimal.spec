@@ -16,7 +16,7 @@ Source0: https://github.com/Defensec/dssp2-minimal/archive/%{commit0}/dssp2-mini
 Source1: https://github.com/Defensec/dssp2-base/archive/%{commit1}/dssp2-base-%{commit1}.tar.gz
 URL: https://github.com/Defensec/dssp2-minimal/wiki
 Requires: policycoreutils >= %{POLICYCOREUTILSVER}
-BuildRequires: policycoreutils >= %{POLICYCOREUTILSVER}
+BuildRequires: policycoreutils >= %{POLICYCOREUTILSVER} findutils
 BuildArch: noarch
 
 %description
