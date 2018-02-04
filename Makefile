@@ -7,6 +7,8 @@ include build.conf
 
 BINDIR ?= /bin
 DESTDIR ?= /
+FIND = $(USRBINDIR)/find
+GREP = $(BINDIR)/grep
 INSTALL = $(USRBINDIR)/install
 MKDIR = $(BINDIR)/mkdir
 RM = $(BINDIR)/rm
@@ -25,56 +27,20 @@ endif
 
 SECILC ?= $(tc_usrbindir)/secilc
 
-POLICY_CONFIG_SOURCES = config/customizable_types \
-	config/dbus_contexts \
-	config/default_contexts \
-	config/default_type \
-	config/failsafe_context \
-	config/file_contexts.subs_dist \
-	config/media \
-	config/openssh_contexts \
-	config/removable_context \
-	config/securetty_types \
-	config/virtual_domain_context \
-	config/virtual_image_context \
-	config/x_contexts
-
-BASE_POLICY_SOURCES = policy/base/access_vectors.cil \
-	policy/base/class_maps.cil \
-	policy/base/class_permissions.cil \
-	policy/base/commands.cil \
-	policy/base/devices.cil \
-	policy/base/files.cil \
-	policy/base/file_systems.cil \
-	policy/base/ibac.cil \
-	policy/base/initial_sids.cil \
-	policy/base/libraries.cil \
-	policy/base/mcs.cil \
-	policy/base/misc_templates.cil \
-	policy/base/network.cil \
-	policy/base/policy_config.cil \
-	policy/base/rbac.cil \
-	policy/base/rbacsep.cil \
-	policy/base/security.cil \
-	policy/base/storage.cil \
-	policy/base/subjects.cil \
-	policy/base/system.cil \
-	policy/base/terminals.cil
-
-MINIMAL_POLICY_SOURCES = policy/minimal.cil
+MODULES = $(shell $(FIND) . -name *.cil -print)
 
 all: clean policy.$(POLICY_VERSION)
 
 clean:
 	$(RM) -f policy.$(POLICY_VERSION) file_contexts
 
-$(POLICY_VERSION): $(BASE_POLICY_SOURCES) $(MINIMAL_POLICY_SOURCES)
+$(POLICY_VERSION): $(MODULES)
 	$(SECILC) -v --policyvers=$(POLICY_VERSION) --o="$@" $^
 
-policy.%: $(BASE_POLICY_SOURCES) $(MINIMAL_POLICY_SOURCES)
+policy.%: $(MODULES)
 	$(SECILC) -v --policyvers=$* --o="$@" $^
 
-install-config: $(POLICY_CONFIG_SOURCES)
+install-config:
 	$(MKDIR) -p $(DESTDIR)/$(SYSCONFDIR)/selinux/$(POLICY_NAME)/contexts/files
 	$(MKDIR) -p $(DESTDIR)/$(SYSCONFDIR)/selinux/$(POLICY_NAME)/contexts/users
 	$(MKDIR) -p $(DESTDIR)/$(SYSCONFDIR)/selinux/$(POLICY_NAME)/logins
@@ -92,6 +58,6 @@ install-config: $(POLICY_CONFIG_SOURCES)
 	$(INSTALL) -m0644 config/virtual_domain_context $(DESTDIR)/$(SYSCONFDIR)/selinux/$(POLICY_NAME)/contexts/virtual_domain_context
 	$(INSTALL) -m0644 config/virtual_image_context $(DESTDIR)/$(SYSCONFDIR)/selinux/$(POLICY_NAME)/contexts/virtual_image_context
 
-install-semodule: install-config $(BASE_POLICY_SOURCES) $(MINIMAL_POLICY_SOURCES)
+install-semodule: install-config $(MODULES)
 	$(MKDIR) -p $(DESTDIR)/$(SHAREDSTATEDIR)/selinux/$(POLICY_NAME)
-	$(SEMODULE) --priority=100 -i $(BASE_POLICY_SOURCES) $(MINIMAL_POLICY_SOURCES) -N -s $(POLICY_NAME) -p $(DESTDIR)
+	$(SEMODULE) --priority=100 -i $(MODULES) -N -s $(POLICY_NAME) -p $(DESTDIR)
