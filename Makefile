@@ -18,6 +18,8 @@ SYSCONFDIR ?= /etc
 USRBINDIR ?= /usr/bin
 USRSBINDIR ?= /usr/sbin
 
+MODULES = $(shell $(FIND) . -name *.cil -print)
+
 ifdef TEST_TOOLCHAIN
 tc_usrbindir := env LD_LIBRARY_PATH="$(TEST_TOOLCHAIN)/lib:$(TEST_TOOLCHAIN)/usr/lib" $(TEST_TOOLCHAIN)$(USRBINDIR)
 else
@@ -25,8 +27,6 @@ tc_usrbindir := $(USRBINDIR)
 endif
 
 SECILC ?= $(tc_usrbindir)/secilc
-
-MODULES = $(shell $(FIND) . -name *.cil -print)
 
 all: clean policy.$(POLICY_VERSION)
 
@@ -57,6 +57,6 @@ install-config:
 	$(INSTALL) -m0644 config/virtual_domain_context $(DESTDIR)/$(SYSCONFDIR)/selinux/$(POLICY_NAME)/contexts/virtual_domain_context
 	$(INSTALL) -m0644 config/virtual_image_context $(DESTDIR)/$(SYSCONFDIR)/selinux/$(POLICY_NAME)/contexts/virtual_image_context
 
-install-semodule: install-config $(MODULES)
+install-semodule: install-config
 	$(MKDIR) -p $(DESTDIR)/$(SHAREDSTATEDIR)/selinux/$(POLICY_NAME)
 	$(SEMODULE) --priority=100 -i $(MODULES) -N -s $(POLICY_NAME) -p $(DESTDIR)
