@@ -18,7 +18,7 @@ SYSCONFDIR ?= /etc
 USRBINDIR ?= /usr/bin
 USRSBINDIR ?= /usr/sbin
 
-MODULES = $(shell $(FIND) . -name *.cil -print)
+MODULES = $(shell $(FIND) . -name *.cil)
 
 ifdef TEST_TOOLCHAIN
 tc_usrbindir := env LD_LIBRARY_PATH="$(TEST_TOOLCHAIN)/lib:$(TEST_TOOLCHAIN)/usr/lib" $(TEST_TOOLCHAIN)$(USRBINDIR)
