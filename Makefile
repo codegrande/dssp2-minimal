@@ -8,6 +8,7 @@ include build.conf
 BINDIR ?= /bin
 DESTDIR ?= /
 FIND = $(USRBINDIR)/find
+GREP = $(BINDIR)/grep
 INSTALL = $(USRBINDIR)/install
 MKDIR = $(BINDIR)/mkdir
 RM = $(BINDIR)/rm
@@ -18,7 +19,7 @@ SYSCONFDIR ?= /etc
 USRBINDIR ?= /usr/bin
 USRSBINDIR ?= /usr/sbin
 
-MODULES = $(shell $(FIND) . -name *.cil)
+MODULES = $(shell $(FIND) . -name *.cil | $(GREP) -v 'test')
 
 ifdef TEST_TOOLCHAIN
 tc_usrbindir := env LD_LIBRARY_PATH="$(TEST_TOOLCHAIN)/lib:$(TEST_TOOLCHAIN)/usr/lib" $(TEST_TOOLCHAIN)$(USRBINDIR)
