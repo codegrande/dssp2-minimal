@@ -97,6 +97,16 @@ To avoid dumping of core with Xserver/Xwayland:
 
     cat /etc/selinux/dssp2-minimal/contexts/x_contexts > /etc/X11/xorg.conf.d/99-selinux.conf
 
+Configuration of /etc/selinux/semanage.conf:
+
+    module-store = direct
+    expand-check = 1
+    usepasswd = false
+
+    [sefcontext_compile]
+    path = /usr/sbin/sefcontext_compile
+    args = -r $@
+    [end]
 
 ## Getting started with Hello World! (requires installation with semodule)
 
