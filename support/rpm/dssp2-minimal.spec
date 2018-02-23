@@ -59,9 +59,7 @@ Provides the base Defensec SELinux Security Policy package.
 %config(noreplace) %{_sysconfdir}/selinux/%1/contexts/files/media \
 %config(noreplace) %{_sysconfdir}/selinux/%1/contexts/files/file_contexts.subs_dist \
 %verify(not md5 size mtime) %{_sysconfdir}/selinux/%1/contexts/files/file_contexts \
-%verify(not md5 size mtime) %{_sysconfdir}/selinux/%1/contexts/files/file_contexts.bin \
 %verify(not md5 size mtime) %{_sysconfdir}/selinux/%1/contexts/files/file_contexts.homedirs \
-%verify(not md5 size mtime) %{_sysconfdir}/selinux/%1/contexts/files/file_contexts.homedirs.bin \
 %{_sharedstatedir}/selinux/%1/active/commit_num \
 %{_sharedstatedir}/selinux/%1/active/file_contexts \
 %{_sharedstatedir}/selinux/%1/active/file_contexts.homedirs \
@@ -98,6 +96,8 @@ mv -f dssp2-base-%{commit1} policy/base
 
 %install
 make DESTDIR=%{buildroot} install-semodule
+rm -f %{buildroot}/%{_sysconfdir}/selinux/dssp2-minimal/contexts/files/file_contexts.bin \
+   %{buildroot}/%{_sysconfdir}/selinux/dssp2-minimal/contexts/files/file_contexts.homedirs.bin
 
 %clean
 rm -rf %{buildroot}
