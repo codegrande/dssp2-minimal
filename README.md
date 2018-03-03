@@ -121,15 +121,9 @@ Configuration of /etc/selinux/semanage.conf:
 
         (typepermissive subj)
 
-        (filecon "/usr/bin/helloworld\.sh" file cmd_file_context)
-    )
+        (filecon "/usr/bin/helloworld\.sh" file cmd_file_context))
     (in sys
-        (call helloworld.auto_subj_type_transition
-            (
-                isid
-            )
-        )
-    )
+        (call helloworld.auto_subj_type_transition (isid)))
     EOF
     semodule -i helloworld.cil
     restorecon /usr/local/bin/helloworld.sh

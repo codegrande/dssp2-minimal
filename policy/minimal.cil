@@ -49,7 +49,6 @@
     (call subj.unconfined_subj_type (isid))
 
     (call sys.unconfined_subj_type (isid))
-    (call sys.var_log.generic_var_log_obj_type_transition (isid))
 
     (call term.unconfined_subj_type (isid))
 
