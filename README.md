@@ -71,6 +71,9 @@ Fedora:
     cp /usr/lib/tmpfiles.d/sudo.conf /etc/tmpfiles.d/ && \
         sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/sudo.conf
 
+    cp /usr/lib/tmpfiles.d/samba.conf /etc/tmpfiles.d/ && \
+        sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/samba.conf
+
     cp /lib/systemd/system/sssd-kcm.socket /etc/systemd/system/ && \
         sed -i 's/\/var\/run/\/run/' /etc/systemd/system/sssd-kcm.socket
 
