@@ -267,10 +267,6 @@ cat > /etc/selinux/semanage.conf <<EFO
 module-store = direct
 expand-check = 1
 usepasswd = false
-[sefcontext_compile]
-path = /usr/sbin/sefcontext_compile
-args = -r \$@
-[end]
 EFO
 cp /usr/lib/tmpfiles.d/pam.conf /etc/tmpfiles.d/
 sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/pam.conf
