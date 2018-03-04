@@ -252,6 +252,10 @@ setools-console
 nano
 -selinux-policy
 -selinux-policy-targeted
+-sssd
+-samba-winbind
+-fprintd-pam
+-oddjob-mkhomedir
 %end
 %post
 chmod u+w /root
