@@ -219,11 +219,12 @@ autopart --nolvm
 clearpart --all --initlabel
 shutdown
 repo --name=dssp2 --baseurl=https://tfirg.undo.it/dssp2/
-%packages --ignoremissing --nocore
+%packages --ignoremissing --nocore --excludeWeakdeps
 basesystem
 install
 systemd
 fedora-release
+grubby
 kbd
 passwd
 kernel
@@ -250,12 +251,6 @@ bash
 openssh-server
 setools-console
 nano
--selinux-policy
--selinux-policy-targeted
--sssd
--samba-winbind
--fprintd-pam
--oddjob-mkhomedir
 %end
 %post
 chmod u+w /root
