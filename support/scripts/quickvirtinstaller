@@ -26,7 +26,7 @@ _arg_wheel_password="abc123"
 _arg_guest_name="myguest"
 _arg_guest_mem_size_in_mib="2048"
 _arg_guest_num_vcpu="2"
-_arg_guest_image_path="/data/kcinimod/libvirt/"
+_arg_guest_image_path="/data//libvirt/pool"
 _arg_guest_image_size_in_gib="5"
 _arg_os_variant="fedora26"
 _arg_verbose=off
@@ -42,7 +42,7 @@ print_help ()
     printf "\t%s\n" "-e,--guest-name: Guest name (default: '"myguest"')"
     printf "\t%s\n" "-f,--guest-mem-size-in-mib: Guest memory size in mebibyte (default: '"2048"')"
     printf "\t%s\n" "-g,--guest-num-vcpu: Guest number of virtual CPU (default: '"2"')"
-    printf "\t%s\n" "-i,--guest-image-path: Path to guest image (default: '"/data/kcinimod/libvirt/"')"
+    printf "\t%s\n" "-i,--guest-image-path: Path to guest image (default: '"/data/libvirt/pool"')"
     printf "\t%s\n" "-j,--guest-image-size-in-gib: Guest image size in gibibyte (default: '"5"')"
     printf "\t%s\n" "-k,--os-variant: Guest OS variant (default: '"fedora26"')"
     printf "\t%s\n" "-v,--verbose,--no-verbose: Enable verbosity (off by default)"
@@ -290,12 +290,15 @@ fpaste
 
 if [ -n "$_arg_kickstart_url" ]
 then
-    virt-install --name=${_arg_guest_name} --memory=${_arg_guest_mem_size_in_mib} --vcpus=${_arg_guest_num_vcpu} \
-        --location=${_arg_os_media_url} --cpu=host \
-        --os-type=linux --os-variant=${_arg_os_variant} \
-        --disk path=${_arg_guest_image_path}/${_arg_guest_name}.qcow2,size=${_arg_guest_image_size_in_gib} --network=user \
-        --graphics none --console pty,target_type=serial \
-        --extra-args "ks=${_arg_kickstart_url}/raw console=tty0 console=ttyS0,115200n8 serial"
+    virt-install --connect qemu:///system --name=${_arg_guest_name} \
+                 --memory=${_arg_guest_mem_size_in_mib} \
+                 --vcpus=${_arg_guest_num_vcpu} \
+                 --location=${_arg_os_media_url} --cpu=host \
+                 --os-type=linux --os-variant=${_arg_os_variant} \
+                 --disk path=${_arg_guest_image_path}/${_arg_guest_name}.qcow2,size=${_arg_guest_image_size_in_gib} \
+                 --network=default \
+                 --graphics none --console pty,target_type=serial \
+                 --extra-args "ks=${_arg_kickstart_url}/raw console=tty0 console=ttyS0,115200n8 serial"
 else
     echo "No Kickstart URL: Cancelled!"
 fi
