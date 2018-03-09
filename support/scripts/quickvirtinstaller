@@ -256,9 +256,9 @@ nano
 chmod u+w /root
 systemctl enable systemd-resolved systemd-networkd
 ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
-cat > /etc/systemd/network/ens2.network <<FOE
+cat > /etc/systemd/network/enp0s2.network <<FOE
 [Match]
-Name=ens2
+Name=enp0s2
 [Network]
 DHCP=yes
 FOE
