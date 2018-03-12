@@ -283,6 +283,15 @@ echo "refclock PHC /dev/ptp0 poll 3 dpoll -2 offset 0" >> /etc/chrony.conf
 echo "install_weak_deps=0" >> /etc/dnf/dnf.conf
 semodule -nB
 restorecon -RF /
+mkdir /mytest
+mount --bind / /mytest
+chcon -u sys.id -r sys.role -t fs.sysfs.fs /mytest/sys
+chcon -u sys.id -r sys.role -t files.generic_runtime.runtime_file /mytest/run
+chcon -u sys.id -r sys.role -t fs.proc.fs /mytest/proc  
+chcon -u sys.id -r sys.role -t fs.devtmpfs.fs /mytest/dev
+chcon -u sys.id -r sys.role -t files.generic_boot.boot_file /mytest/boot
+umount /mytest
+rmdir /mytest
 %end
 EOF
 fpaste
