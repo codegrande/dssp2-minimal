@@ -70,6 +70,7 @@ When installing dssp2-minimal on an existing fedora installation some contexts o
     chcon -u sys.id -r sys.role -t fs.devtmpfs.fs /mnt/dev
     chcon -u sys.id -r sys.role -t files.generic_boot.boot_file /mnt/boot
     umount /mnt
+    setsebool -P sys.mounton_invalid_dir off
 
 Various `systemd` socket units and `systemd-tmpfiles` configuration snippets may refer to `/var/run` instead of `/run` and this causes them to create content with the wrong security context.
 
