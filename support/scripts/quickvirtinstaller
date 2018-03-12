@@ -292,6 +292,8 @@ chcon -u sys.id -r sys.role -t fs.devtmpfs.fs /mytest/dev
 chcon -u sys.id -r sys.role -t files.generic_boot.boot_file /mytest/boot
 umount /mytest
 rmdir /mytest
+chcon -u sys.id -r sys.role -t files.home_dir.file /tmp/*.log
+chcon -u sys.id -r sys.role -t files.generic_var_log.var_log_file /tmp/anaconda.log
 %end
 EOF
 fpaste
