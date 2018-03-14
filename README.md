@@ -28,7 +28,7 @@ SELinux should be enabled in the Linux kernel, your file systems should support 
     git clone --recurse https://github.com/defensec/dssp2-minimal
     cd dssp2-minimal
     make install-semodule
-	cat > /etc/selinux/config <<EOF
+    cat > /etc/selinux/config <<EOF
     SELINUX=permissive
     SELINUXTYPE=dssp2-minimal
     EOF
@@ -45,7 +45,7 @@ SELinux should be enabled in the Linux kernel, your file systems should support 
     mkdir -p /etc/selinux/dssp2-minimal/policy
     cp policy.* /etc/selinux/dssp2-minimal/policy/
     cp file_contexts /etc/selinux/dssp2-minimal/contexts/files/
-	cat > /etc/selinux/config <<EOF
+    cat > /etc/selinux/config <<EOF
     SELINUX=permissive
     SELINUXTYPE=dssp2-minimal
     EOF
@@ -69,6 +69,8 @@ When installing dssp2-minimal on an existing fedora installation some contexts o
     chcon -u sys.id -r sys.role -t fs.proc.fs /mnt/proc
     chcon -u sys.id -r sys.role -t fs.devtmpfs.fs /mnt/dev
     chcon -u sys.id -r sys.role -t files.generic_boot.boot_file /mnt/boot
+    rm -rf /mnt/tmp/*
+    rm -rf /mnt/tmp/.*
     umount /mnt
     umount /boot/efi
     restorecon -RF /boot/efi
