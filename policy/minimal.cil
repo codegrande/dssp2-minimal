@@ -31,6 +31,7 @@
     (allow isid self (service (all)))
     (allow isid files.generic_config.config_file (service (all)))
     (allow isid files.generic_runtime.runtime_file (service (all)))
+    (allow isid files.home.file (service (all)))
     (allow isid lib.generic_libraries.lib_file (service (all)))
 
     (call dev.null.control_client_subj_type (isid))
