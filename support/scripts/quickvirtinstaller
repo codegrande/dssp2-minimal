@@ -305,7 +305,7 @@ then
                  --location=${_arg_os_media_url} --cpu=host \
                  --os-type=linux --os-variant=${_arg_os_variant} \
                  --disk path=${_arg_guest_image_path}/${_arg_guest_name}.qcow2,size=${_arg_guest_image_size_in_gib} \
-                 --network=default \
+                 --network=default --noreboot \
                  --graphics none --console pty,target_type=serial \
                  --extra-args "ks=${_arg_kickstart_url}/raw console=tty0 console=ttyS0,115200n8 serial"
 else
