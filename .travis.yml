@@ -34,7 +34,8 @@ before_install:
   - xmlto --version
 
 install:
-  - SELINUX_USERSPACE_VERSION=secilc-2.7
+  #- SELINUX_USERSPACE_VERSION=secilc-2.7
+  - SELINUX_USERSPACE_VERSION=master
 
   - export DESTDIR="${TRAVIS_BUILD_DIR}/selinux"
   - |
