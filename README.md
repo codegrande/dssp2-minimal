@@ -18,7 +18,7 @@ New language features allow authors to focus on creativity and productivity. Cle
 
 ## Requirements
 
-DSSP requires `semodule` or `secilc` >= 2.7 and Linux 4.14
+DSSP requires `semodule` or `secilc` >= 2.8 and Linux 4.16
 
 SELinux should be enabled in the Linux kernel, your file systems should support `security extended attributes` and this support should be enabled in the Linux kernel.
 
