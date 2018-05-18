@@ -85,22 +85,52 @@ Various `systemd` socket units and `systemd-tmpfiles` configuration snippets may
 Fedora:
 
     cp /usr/lib/tmpfiles.d/pam.conf /etc/tmpfiles.d/ && \
-        sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/pam.conf
+       sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/pam.conf
 
     cp /usr/lib/tmpfiles.d/certmonger.conf /etc/tmpfiles.d/ && \
-        sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/certmonger.conf
+       sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/certmonger.conf
+
+    cp /usr/lib/tmpfiles.d/mdadm.conf /etc/tmpfiles.d/ && \
+       sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/mdadm.conf
+
+    cp /usr/lib/tmpfiles.d/pptp.conf /etc/tmpfiles.d/ && \
+       sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/pptp.conf
+
+    cp /usr/lib/tmpfiles.d/radvd.conf /etc/tmpfiles.d/ && \
+       sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/radvd.conf
+
+    cp /usr/lib/tmpfiles.d/spice-vdagentd.conf /etc/tmpfiles.d/ && \
+       sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/spice-vdagentd.conf
+
+    cp /usr/lib/tmpfiles.d/vpnc.conf /etc/tmpfiles.d/ && \
+       sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/vpnc.conf
 
     cp /usr/lib/tmpfiles.d/sudo.conf /etc/tmpfiles.d/ && \
-        sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/sudo.conf
+       sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/sudo.conf
 
     cp /usr/lib/tmpfiles.d/samba.conf /etc/tmpfiles.d/ && \
-        sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/samba.conf
+       sed -i 's/\/var\/run/\/run/' /etc/tmpfiles.d/samba.conf
+
+    cp /lib/systemd/system/cups.socket /etc/systemd/system/ && \
+       sed -i 's/\/var\/run/\/run/' /etc/systemd/system/cups.socket
+
+    cp /lib/systemd/system/virtlockd-admin.socket /etc/systemd/system/ && \
+       sed -i 's/\/var\/run/\/run/' /etc/systemd/system/virtlockd-admin.socket
+
+    cp /lib/systemd/system/virtlockd.socket /etc/systemd/system/ && \
+       sed -i 's/\/var\/run/\/run/' /etc/systemd/system/virtlockd.socket
+
+    cp /lib/systemd/system/virtlogd-admin.socket /etc/systemd/system/ && \
+       sed -i 's/\/var\/run/\/run/' /etc/systemd/system/virtlogd-admin.socket
+
+    cp /lib/systemd/system/virtlogd.socket /etc/systemd/system/ && \
+       sed -i 's/\/var\/run/\/run/' /etc/systemd/system/virtlogd.socket
 
     cp /lib/systemd/system/sssd-kcm.socket /etc/systemd/system/ && \
-        sed -i 's/\/var\/run/\/run/' /etc/systemd/system/sssd-kcm.socket
+       sed -i 's/\/var\/run/\/run/' /etc/systemd/system/sssd-kcm.socket
 
     cp /lib/systemd/system/sssd-secrets.socket /etc/systemd/system/ && \
-        sed -i 's/\/var\/run/\/run/' /etc/systemd/system/sssd-secrets.socket
+       sed -i 's/\/var\/run/\/run/' /etc/systemd/system/sssd-secrets.socket
 
 Debian:
 
