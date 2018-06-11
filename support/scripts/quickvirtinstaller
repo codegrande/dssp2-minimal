@@ -215,7 +215,7 @@ rootpw --iscrypted $(rootpw ${_arg_root_password} ${_arg_root_salt})
 timezone Europe/Amsterdam --isUtc
 user --groups=wheel --name=${_arg_wheel_name} --password=$(rootpw ${_arg_wheel_password} ${_arg_wheel_salt}) --iscrypted
 bootloader --location=mbr --append=$(printf "%s\n" "\"module.sig_enforce checkreqprot=0 console=tty0 console=ttyS0,115200n8 serial rd_NO_PLYMOUTH\"")
-autopart --nolvm
+autopart --encrypted --passphrase=${_arg_wheel_password}
 clearpart --all --initlabel
 shutdown
 repo --name=dssp2 --baseurl=https://tfirg.undo.it/dssp2/
