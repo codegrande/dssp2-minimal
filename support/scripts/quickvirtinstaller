@@ -231,15 +231,15 @@ _arg_kickstart_url=$(
 cat <<EOF |
 text
 auth --enableshadow --passalgo=sha512
-url --url=${_arg_os_media_url}
+url --url="${_arg_os_media_url}"
 keyboard --vckeymap=us-euro --xlayouts=us
 lang en_US.UTF-8
 network  --bootproto=dhcp --device=eth0 --noipv6 --activate
-rootpw --iscrypted $(rootpw ${_arg_root_password} ${_arg_root_salt})
+rootpw --iscrypted $(rootpw "${_arg_root_password}" "${_arg_root_salt}")
 timezone Europe/Amsterdam --isUtc
-user --groups=wheel --name=${_arg_wheel_name} --password=$(rootpw ${_arg_wheel_password} ${_arg_wheel_salt}) --iscrypted
+user --groups=wheel --name="${_arg_wheel_name}" --password=$(rootpw "${_arg_wheel_password}" "${_arg_wheel_salt}") --iscrypted
 bootloader --location=mbr --append=$(printf "%s\n" "\"module.sig_enforce checkreqprot=0 console=tty0 console=ttyS0,115200n8 serial rd_NO_PLYMOUTH\"")
-autopart --encrypted --passphrase=${_arg_luks_phrase}
+autopart --encrypted --passphrase="${_arg_luks_phrase}"
 clearpart --all --initlabel
 shutdown
 repo --name=dssp2 --baseurl=https://tfirg.undo.it/dssp2/
@@ -318,7 +318,7 @@ umount /mytest
 rmdir /mytest
 clevis luks bind -f -k- -d /dev/vda2 tang \
     '{"url":"${_arg_tang_url}","thp":"${_arg_tang_thp}"}' \
-    <<< ${_arg_luks_phrase}
+    <<< "${_arg_luks_phrase}"
 echo -n "${_arg_luks_phrase}" | cryptsetup luksRemoveKey /dev/vda2 -
 %end
 EOF
@@ -327,12 +327,12 @@ fpaste
 
 if [ -n "$_arg_kickstart_url" ]
 then
-    virt-install --connect qemu:///system --name=${_arg_guest_name} \
-                 --memory=${_arg_guest_mem_size_in_mib} \
-                 --vcpus=${_arg_guest_num_vcpu} \
-                 --location=${_arg_os_media_url} --cpu=host \
-                 --os-type=linux --os-variant=${_arg_os_variant} \
-                 --disk path=${_arg_guest_image_path}/${_arg_guest_name}.qcow2,size=${_arg_guest_image_size_in_gib} \
+    virt-install --connect qemu:///system --name="${_arg_guest_name}" \
+                 --memory="${_arg_guest_mem_size_in_mib}" \
+                 --vcpus="${_arg_guest_num_vcpu}" \
+                 --location="${_arg_os_media_url}" --cpu=host \
+                 --os-type=linux --os-variant="${_arg_os_variant}" \
+                 --disk path="${_arg_guest_image_path}"/"${_arg_guest_name}".qcow2,size="${_arg_guest_image_size_in_gib}" \
                  --network=default --noreboot \
                  --graphics none --console pty,target_type=serial \
                  --extra-args "ks=${_arg_kickstart_url}/raw console=tty0 console=ttyS0,115200n8 serial"
