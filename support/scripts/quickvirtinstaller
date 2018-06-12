@@ -14,7 +14,7 @@ die()
 begins_with_short_option()
 {
     local first_option all_short_options
-    all_short_options='abcdefgijkvh'
+    all_short_options='abcdefgijklmvh'
     first_option="${1:0:1}"
     test "$all_short_options" = "${all_short_options/$first_option/}" && return 1 || return 0
 }
@@ -29,12 +29,14 @@ _arg_guest_num_vcpu="2"
 _arg_guest_image_path="/data//libvirt/pool"
 _arg_guest_image_size_in_gib="5"
 _arg_os_variant="fedora26"
+_arg_tang_url="http://192.168.1.1:31337"
+_arg_tang_thp="8IsXxoLFYUEL1s9hDuRQnwEHDLw"
 _arg_verbose=off
 
 print_help ()
 {
     printf "%s\n" "Quick Libvirt installer for Fedora with DSSP2 minimal"
-    printf 'Usage: %s [-a|--os-media-url <arg>] [-b|--root-password <arg>] [-c|--wheel-name <arg>] [-d|--wheel-password <arg>] [-e|--guest-name <arg>] [-f|--guest-mem-size-in-mib <arg>] [-g|--guest-num-vcpu <arg>] [-i|--guest-image-path <arg>] [-j|--guest-image-size-in-gib <arg>] [-k|--os-variant <arg>] [-v|--(no-)verbose] [-h|--help]\n' "$0"
+    printf 'Usage: %s [-a|--os-media-url <arg>] [-b|--root-password <arg>] [-c|--wheel-name <arg>] [-d|--wheel-password <arg>] [-e|--guest-name <arg>] [-f|--guest-mem-size-in-mib <arg>] [-g|--guest-num-vcpu <arg>] [-i|--guest-image-path <arg>] [-j|--guest-image-size-in-gib <arg>] [-k|--os-variant <arg>] [-l|--tang-url <arg>] [-m|--tang-thp <arg>] [-v|--(no-)verbose] [-h|--help]\n' "$0"
     printf "\t%s\n" "-a,--os-media-url: URL to installation media (default: '"https://fedora.mirror.wearetriple.com/linux/development/rawhide/Everything/x86_64/os/"')"
     printf "\t%s\n" "-b,--root-password: Guest root password (default: '"abc123"')"
     printf "\t%s\n" "-c,--wheel-name: Guest wheel name (default: '"kcinimod"')"
@@ -45,6 +47,8 @@ print_help ()
     printf "\t%s\n" "-i,--guest-image-path: Path to guest image (default: '"/data/libvirt/pool"')"
     printf "\t%s\n" "-j,--guest-image-size-in-gib: Guest image size in gibibyte (default: '"5"')"
     printf "\t%s\n" "-k,--os-variant: Guest OS variant (default: '"fedora26"')"
+    printf "\t%s\n" "-l,--tang-url: Tang Server URL (default: '"http://192.168.1.1:31337"')"
+    printf "\t%s\n" "-m,--tang-thp: Tang Server Thumbprint (default: '"8IsXxoLFYUEL1s9hDuRQnwEHDLw"')"
     printf "\t%s\n" "-v,--verbose,--no-verbose: Enable verbosity (off by default)"
     printf "\t%s\n" "-h,--help: Prints help"
 }
@@ -165,6 +169,18 @@ parse_commandline ()
             -k*)
                 _arg_os_variant="${_key##-k}"
                 ;;
+            --tang-url=*)
+                _arg_tang_url="${_key##--tang-url=}"
+                ;;
+            -l*)
+                _arg_tang_url="${_key##-l}"
+                ;;
+            --tang-thp=*)
+                _arg_tang_thp="${_key##--tang-thp=}"
+                ;;
+            -m*)
+                _arg_tang_thp="${_key##-m}"
+                ;;
             -v|--no-verbose|--verbose)
                 _arg_verbose="on"
                 test "${1:0:5}" = "--no-" && _arg_verbose="off"
@@ -250,6 +266,7 @@ glibc
 bash
 openssh-server
 setools-console
+clevis-dracut
 nano
 %end
 %post
@@ -290,6 +307,10 @@ chcon -u sys.id -r sys.role -t fs.devtmpfs.fs /mytest/dev
 chcon -u sys.id -r sys.role -t files.generic_boot.boot_file /mytest/boot
 umount /mytest
 rmdir /mytest
+clevis luks bind -f -k- -d /dev/vda2 tang \
+    '{"url":"${_arg_tang_url}","thp":"${_arg_tang_thp}"}' \
+    <<< ${_arg_wheel_password}
+cryptsetup luksRemoveKey /dev/vda2 - <<< ${_arg_wheel_password}
 %end
 EOF
 fpaste
