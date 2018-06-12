@@ -266,6 +266,7 @@ glibc
 bash
 openssh-server
 setools-console
+cracklib-dicts
 clevis-dracut
 nano
 %end
