@@ -316,6 +316,7 @@ chcon -u sys.id -r sys.role -t fs.devtmpfs.fs /mytest/dev
 chcon -u sys.id -r sys.role -t files.generic_boot.boot_file /mytest/boot
 umount /mytest
 rmdir /mytest
+hostnamectl set-hostname ${_arg_guest_name}
 clevis luks bind -f -k- -d /dev/vda2 tang \
     '{"url":"${_arg_tang_url}","thp":"${_arg_tang_thp}"}' \
     <<< ${_arg_luks_phrase}
