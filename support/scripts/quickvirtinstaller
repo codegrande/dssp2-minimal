@@ -234,10 +234,10 @@ auth --enableshadow --passalgo=sha512
 url --url="${_arg_os_media_url}"
 keyboard --vckeymap=us-euro --xlayouts=us
 lang en_US.UTF-8
-network  --bootproto=dhcp --device=eth0 --noipv6 --activate
+network  --bootproto=dhcp --device=ens2 --hostname="${_arg_guest_name}" --noipv6 --activate
 rootpw --iscrypted $(rootpw "${_arg_root_password}" "${_arg_root_salt}")
 timezone Europe/Amsterdam --isUtc
-user --groups=wheel --name="${_arg_wheel_name}" --password=$(rootpw "${_arg_wheel_password}" "${_arg_wheel_salt}") --iscrypted
+user --groups=wheel --uid=9999 --gid=9999 --name="${_arg_wheel_name}" --password=$(rootpw "${_arg_wheel_password}" "${_arg_wheel_salt}") --iscrypted
 bootloader --location=mbr --append=$(printf "%s\n" "\"module.sig_enforce checkreqprot=0 console=tty0 console=ttyS0,115200n8 serial rd_NO_PLYMOUTH\"")
 autopart --encrypted --passphrase="${_arg_luks_phrase}"
 clearpart --all --initlabel
