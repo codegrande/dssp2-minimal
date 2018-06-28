@@ -274,6 +274,7 @@ glibc
 bash
 openssh-server
 setools-console
+python3-libselinux
 cracklib-dicts
 clevis-dracut
 nano
