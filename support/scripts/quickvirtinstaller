@@ -316,11 +316,14 @@ chcon -u sys.id -r sys.role -t fs.proc.fs /mytest/proc
 chcon -u sys.id -r sys.role -t fs.devtmpfs.fs /mytest/dev
 chcon -u sys.id -r sys.role -t files.generic_boot.boot_file /mytest/boot
 umount /mytest
+mount --bind /boot /mytest
+chcon -u sys.id -r sys.role -t fs.dosfs.fs /mytest/efi
+umount /mytest
 rmdir /mytest
-clevis luks bind -f -k- -d /dev/vda2 tang \
+clevis luks bind -f -k- -d /dev/vda3 tang \
     '{"url":"${_arg_tang_url}","thp":"${_arg_tang_thp}"}' \
     <<< "${_arg_luks_phrase}"
-echo -n "${_arg_luks_phrase}" | cryptsetup luksRemoveKey /dev/vda2 -
+echo -n "${_arg_luks_phrase}" | cryptsetup luksRemoveKey /dev/vda3 -
 %end
 EOF
 fpaste
@@ -329,7 +332,7 @@ fpaste
 if [ -n "$_arg_kickstart_url" ]
 then
     virt-install --connect qemu:///system --name="${_arg_guest_name}" \
-                 --memory="${_arg_guest_mem_size_in_mib}" \
+                 --memory="${_arg_guest_mem_size_in_mib}" --boot=uefi \
                  --vcpus="${_arg_guest_num_vcpu}" \
                  --location="${_arg_os_media_url}" --cpu=host \
                  --os-type=linux --os-variant="${_arg_os_variant}" \
