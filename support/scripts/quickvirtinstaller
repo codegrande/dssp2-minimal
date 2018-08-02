@@ -324,6 +324,10 @@ clevis luks bind -f -k- -d /dev/vda3 tang \
     '{"url":"${_arg_tang_url}","thp":"${_arg_tang_thp}"}' \
     <<< "${_arg_luks_phrase}"
 echo -n "${_arg_luks_phrase}" | cryptsetup luksRemoveKey /dev/vda3 -
+#do not want anaconda leftovers
+mount -t tmpfs none /var/log
+mount -t tmpfs none /root
+mount -t tmpts mone /etc/sysconfig
 %end
 EOF
 fpaste
