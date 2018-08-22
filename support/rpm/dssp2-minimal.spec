@@ -8,7 +8,7 @@
 
 Summary: Defensec SELinux Security Policy Version 2
 Name: dssp2
-Version: 1.3
+Version: 1.4
 Release: %(date +%Y%%m%%d)git%{shortcommit0}%{?dist}
 License: Public Domain
 Group: System Environment/Base
@@ -134,5 +134,5 @@ selinuxenabled && semodule -B -n
 exit 0
 
 %changelog
-* Sun Mar 25 2018 Dominick Grift <dac.override@gmail.com> - 1.3-%(date +%Y%%m%%d)git%{shortcommit0}
+* Wed Aug 22 2018 Dominick Grift <dac.override@gmail.com> - 1.4-%(date +%Y%%m%%d)git%{shortcommit0}
 - Git snapshot
